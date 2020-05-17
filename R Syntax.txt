@@ -1,0 +1,1344 @@
+#Aggreagte and sum
+df2 <- aggregate(Revenue ~ Country+Brand+concat, df1, function(x) round(sum(as.numeric(x))))
+df22 <- df1 %>% group_by(Country, Brand, concat) %>% summarise(TRevenue = sum(Revenue))
+
+#aggreagte
+df1 %>% group_by(sex) %>% summarise(meanwidth = mean(width))
+
+#arrange 
+df <- arrange(df, sex, -income)
+
+#create new variables
+df1 %>% group_by(sex) %>% mutate(samplewidth = 0.5*width)
+
+#get index of zero and delete
+revenuezero <- with(df2, which(df2$Revenue==0, arr.ind=TRUE))
+df3 <- df2[-revenuezero, ]
+
+#Subset data based on some external condition
+#Split the data into 2 and then merge
+df4 <- merge(x = df3, y = df, by = "concat", all.x = TRUE)
+data <- merge(Toms_of_maine , TP , by.x = c("MKT","PER"),by.y = c("MKT","PER") )
+
+#Select columns
+df4 = select(df4, Country.y, Brand.y, Month, Revenue.y)
+df = data[, .(Country, Brand, Month, Revenue)]
+#in data.table
+dat <- mydata[, match(c("DATE", "Glance_views", dat_map$KPI), colnames(mydata))]
+
+df <- df[,c(1:5)]
+df1 <- subset(Final_Pred, select = -c(2:5))
+df1 <- select(temp1, c(2,3,1))
+data <- data[ , !(names(data) %in% "PROD.y")]
+
+#setnames/ change column names, rename
+setnames(TP,old = c("EQ Units") , new = c("EQ Units_CAT"))
+setnames(mydata , c("min", "tailnum"), c("minimum", "tail_number"))
+#rename in data.table setnames for 1 column.
+colnames(dat)[2] <- "Volume"
+
+#turn NA to 0
+df[is.na(df$Revenue)] <- 0
+
+#Reading and writing files
+data<- fread("Revenue and Transaction.csv", header = T) #CSV
+TP <-read_excel("Toothpaste.xlsx",sheet = "Total US", col_names = TRUE, col_types = NULL)
+fwrite(df, "without NA.csv") #csv
+
+#convert a string date to actual date Eg: Jan-17 to 01-01-2019
+require(lubridate)
+df4$Date <- dmy(paste("01-", df4$Month , sep =""))
+
+#Converting a factor to date
+bike_share_train$datetime <-as.POSIXct(bike_share_train$datetime, format="%Y-%m-%d %H:%M:%S")
+
+#TO extract day
+bike_share_train$day <-  strftime(bike_share_train$datetime, '%u')
+
+#Fit a linear model
+model1 <- lm(formula = Fertility ~ Agriculture + Education + Catholic + 
+    Infant.Mortality, data = swiss)
+#to get summary of model
+Summary(model1)
+#to get predictionion of the model
+pred_1 <- predict(model1, testdata)
+
+#fit a logistic model
+glm.fits=glm(Direction ~ Lag1+Lag2+Lag3+Lag4+Lag5+Volume , data= Smarket ,family =binomial )
+summary(glm.fits)
+#gives out the coefs B1, B2....
+coef(glm.fits)
+#coefecient summary
+summary(glm.fits)$coef
+#pvalue
+summary(glm.fits)$coef[,4]
+#prediction
+glm.probs <- predict(glm.fits, type = "response")
+#The following two commands create a vector of class predictions based on whether the predicted probability of a market increase is greater than or less than 0.5.
+glm.pred <- rep("Down", 1250)
+glm.pred[glm.probs>0.5] = "Up"
+table(glm.pred, Smarket$Direction)
+#this will give the accuracy of the prediction
+mean(glm.pred==Smarket$Direction)
+
+#fitting a LDA model
+lda.fit <- lda(Direction ~ Lag1+ Lag2, data = Smarket, subset = train)
+summary(lda.fit)
+#LDA has 3 elements
+#the first element class contains - LDA's predictions about the movement of the market. 
+#The second element, posterior, is a matrix whose kth column contains the posterior probability that the corresponding observation belongs to the kth class,
+#x contains the linear discriminants,
+lda.class <- lda.pred$class
+table(lda.class, Smarket.2005$Direction
+
+#Fitting a QDA model
+qda.fit=qda(Direction~Lag1+Lag2 ,data=Smarket ,subset =train)
+summary(qda.fit)
+
+#FItting a KNN model
+knn.pred=knn(train.X, test.X, train.Y ,k=3)
+table(knn.pred, Smarket.2005$Direction)
+
+#splitting the data into train and test
+smp_size <- floor(0.75 * nrow(mtcars))
+
+#Training Period
+train_period<-1:ceiling(nrow(data_bsts)*0.8)
+train<-as.data.frame(data_bsts[train_period,])
+
+#Holdout Period
+holdout_period<-(ceiling(nrow(data_bsts)*0.8)+1):nrow(data_bsts)
+
+#model formula
+Formula<-as.formula(paste(target_variable,"~",paste(feature_variables,sep = "",collapse = "+")))
+
+
+## set the seed to make your partition reproducible
+#1
+smp_size <- floor(0.75 * nrow(mtcars))
+set.seed(123)
+train_ind <- sample(seq_len(nrow(mtcars)), size = smp_size)
+train <- mtcars[train_ind, ]
+test <- mtcars[-train_ind, ]
+#2
+set.seed(101) # Set Seed so that same sample can be reproduced in future also
+# Now Selecting 75% of data as sample from total 'n' rows of the data  
+sample <- sample.int(n = nrow(data), size = floor(.75*nrow(data)), replace = F)
+train <- data[sample, ]
+test  <- data[-sample, ]
+#3
+require(caTools)
+set.seed(101) 
+sample = sample.split(data$anycolumn, SplitRatio = .75)
+train = subset(data, sample == TRUE)
+test  = subset(data, sample == FALSE)
+
+#to get rows with some or other value as NA
+sum(is.na(Hitters))
+#And to remove those rows from table completly.
+na.omit(Hitters)
+
+#TO plot multiple graphs at the same time
+par(mfrow	= c(2,2)
+
+#to identify maximum point in a vector and minimum
+which.max(vectorname)
+which.max(vectorname)
+
+#ridge regression
+library(glmnet)
+x=model.matrix (Salary∼.,Hitters )[,-1]
+y=Hitters$Salary
+grid = 10^seq(10,-2, length= 100)
+ridge.mod = glmnet(x,y, alpha = 0, lambda = grid)
+summary(ridge.mod)
+
+#Lasso
+library(glmnet)
+x=model.matrix (Salary∼.,Hitters )[,-1]
+y=Hitters$Salary
+grid = 10^seq(10,-2, length= 100)
+lasso.mod = glmnet(x,y, alpha = 1, lambda = grid)
+summary(lasso.mod)
+
+#Looping to get multiple models and store it in a list of lists
+uni_country <- unique(df5$Country.y)
+emplist <- rep(list(list()), 192)
+for (i in uni_country) {
+  df6 <- filter(df5, df5$Country.y == i)
+  uni_brand <- unique(df6$Brand.y)
+  for (j in uni_brand) {
+    df7 <- filter(df6, df6$Brand.y == j)
+    ts1 <- ts(df7$Revenue.y, start=c(2018, 1), end=c(2019, 3), frequency=12)
+    model1 <- auto.arima(ts1)
+	#create a dummy dataframe ithin the loop itself, later on it can be manipulated outside the loop
+    dummy<-as.data.frame(forecast(model, h=6)) 
+    dummy$Country <- i
+    dummy$brand <- j
+	#Inorder to append the result in for loop one below the other, create a seperate dataframe and add a if(!exists(df)) condition and use rbind in it.
+    if(!exists("Final_Pred")){Final_Pred=dummy}
+    else{Final_Pred <- rbind(Final_Pred, dummy)
+    }
+    }
+}
+
+#to get vector back from a list
+m<- unlist(listname)
+
+#gather makes wide data long
+gather(data, column1, column2, key = "year", value ="cases")
+gather(data, 3:10, key = "year", value ="cases")
+gather(data, c(2,4,5), key = "year", value ="cases")
+
+#spread makes long data wide. Spreads the data by creating columns
+
+
+#seperate a column into two based on a charcater/ split cells
+seperate(df, columnname, sep= "/", into=c(col1, col2))
+
+#If two dataframe have same no of rows then it can be binded.
+df <- rbind(df1, df2)
+
+#If the two vectors or DF have same length, then it can be binded by columns
+Carseats <- data.frame(Carseats, High)
+Carseats <- cbind(Carseats, High)
+rowsums, Colsums, tapply, lapply, mapply, gather, spread, reshape, melt, cast, decast, smartbind.
+
+
+#To fit all varaiables except some.
+tree.carseats =tree(High~.-Sales ,Carseats )
+
+#TO plot a decision tree model
+plot(modelname)
+text(tree.carseats ,pretty =0)
+
+#USing an empty dataframe in loop
+1. Create a list
+2. Create Looping
+3. Keep converting list to dataframe and bind it
+df <- NULL
+df$x = i
+df$y = j
+new_df = as.data.frame(df)
+rbind(newdf, df)
+
+
+#Threee ways to filter row level data
+1. take concatenation and filter it.
+2. Use SQL query.
+3. Use spread to omit the rows and then gather it.
+
+#MAPE formula
+mape<-mean(abs((prediction-actual)/actual),na.rm = T)*100
+
+#Correealtion plot
+library(GGally)
+ggscatmat(df1, columns = 1:ncol(df1), corMethod = "pearson")
+
+
+#To get correlation plot
+
+train_cor <- cor(data)
+library(corrplot)
+corrplot(data, method = 'color', addCoef.col="black")
+
+#TO perfform stepwise regression 
+# Now performs stepwise model selection by AIC with both directions(Forward, Backward)
+library(MASS)
+lmBikeRentAIC<-stepAIC(lmBikeRent, direction="both")
+summary(lmBikeRentAIC)
+
+#After creating a stepwise model, we can use it for prediction
+# Apply prediction on validation set
+lm_predict_validation <- predict(lmBikeRentAIC, newdata = validation_set)
+
+#to get rmse between predicted and validation set
+validaion_rmse<-rmse(validation_set$count,lm_predict_validation)
+
+# As the predicted values are in log format, use exponential(exp) to convert from log to non-log values
+lm_predict_validation_nonlog <- exp(lm_predict_validation_log)
+
+#install and load packages with function
+
+ipak <- function(pkg){
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg)) 
+    install.packages(new.pkg, dependencies = TRUE)
+  sapply(pkg, require, character.only = TRUE)
+}
+
+packages <- c("ggplot2", "tseries", "reshape2", "forecast", "xlsx", "readxl", "corrplot", "data.table", "dplyr", "tidyr", "MASS", "zoo", "lubridate", "prophet")
+
+ipak(packages)
+
+#TO get cummulative sum
+squad <- squad %>% mutate(upper=cumsum(size),lower=lag(upper))
+
+#scatter plot
+scatter <- 
+  ggplot(cancer_data, aes(radius_mean, smoothness_mean)) + 
+  geom_point(color = "#606060") +
+  geom_smooth(method=lm, color="#608793", se=FALSE) +
+  labs(x = "Radius Mean", y = "Smoothness Mean") +
+  theme_minimal()
+  
+  ggplot(train, aes(x= SalePrice, y =  GrLivArea)) + geom_point()
+
+
+#Melt is used to make wide data long and decast to make long data wide
+melted_correlation <- melt(correlation_matrix, na.rm = TRUE)
+
+#Heat plot
+heat_plot <- 
+  ggplot(cancer_data, aes(radius_mean, smoothness_mean)) + 
+  stat_density_2d(aes(fill = ..level..), geom = "polygon") +
+  #scale_fill_continuous(low="#e8dbc9", high="#e8ccc9") +
+  scale_fill_continuous(low="#e8dbc9", high="#608793") +
+  labs(x = "Radius Mean", y = "Smoothness Mean") +
+  theme_minimal()
+  
+#Get data from a model/object in the form of a dataframe. Augment information from object.
+residual_data <- augment(breast_cancer_lm)
+
+#residual plot along with histogram on margins
+residuals_plot <- ggplot(residual_data, aes(x = .fitted, y = .resid, label="hi")) + 
+  geom_point(color="#606060") + 
+  geom_hline(yintercept=0, linetype="dashed", color="#606060", size=0.5) +
+  theme_minimal() +
+  labs(title="Residuals", x="", y="")
+res_with_marginal <- ggExtra::ggMarginal(residuals_plot, color = "#606060", 
+                                         fill = "#606060", type = "histogram")
+										 
+#getting multiple plots on some page
+grid.arrange(arrangeGrob(qqplot, res_with_marginal, ncol=2), heatmap_tiles, nrow = 2)
+
+#check for logistic model to check data spread in binomial classification
+
+
+overview_plot <-
+  ggplot(data=cancer_data, aes(x=radius_mean, y=diagnosis)) + 
+  geom_point(col = "#606060") + 
+  theme_minimal() +
+  labs(title="Diagnosis versus Mean Radius", subtitle="A quick overview of the data")
+
+
+#FItting  logictic model . ALways specify family =  "binomial"
+
+logit_model <- glm(diagnosis ~ radius_mean, data = cancer_data, family = "binomial")
+
+#FItting a logictic curve to data
+logit_fit <-
+    ggplot(data=cancer_data, 
+         aes(x=radius_mean, y=diagnosis)) + 
+    geom_point(col = "#606060", size = 0.05) + 
+    theme_minimal() +
+    stat_smooth(method="glm", method.args=list(family="binomial"), 
+              color = "#608793", fill = "#608793", se=FALSE, size = 0.5) +
+    labs(title="Diagnosis versus Mean Radius", subtitle="Fitted Logistic Curve",
+       x = "Mean Radius", y = "Log Odds of Diagnosis")
+dependent_var <- cancer_data$diagnosis
+
+#CHeck for missing values in each column.
+#It will check no of values missing in each column, and then we create a dataframe to view it.
+Missing_index <- sapply(train, function(x) sum(is.na(x)))
+missing_summary <- data.frame(index =  names(train), missing_values <- Missing_index)
+missing_summary <- missing_summary[missing_summary$missing_values....Missing_index>0, ]
+
+#to get no of occurences of a value in a column, mostly used in character
+table(combined$Alley)
+
+#to get class of all the varaibles in a vector
+Column_classes <- sapply(names(combined),function(x){class(combined[[x]])})
+
+#convert multiple character columns to factor
+combined <- combined %>% mutate_if(is.character, funs(factor(.)))
+
+#plotting a histogram
+ggplot(train_new, aes(SalePrice)) + geom_histogram()
+
+#plotting a boxplot
+ggplot(train_new, aes(y= train_new$GrLivArea, x=as.factor(train_new$YrSold))) + geom_boxplot()
+
+#plot fit and residual
+plot(fit_1$fit,fit_1$residuals)
+abline(h=0,col="blue")
+
+#One hot encoding for train data
+dummy <- dummyVars("~.", data = train)
+train_trans <- data.frame(predict(dummy, train))
+dim(train_trans)
+
+#data.table
+# to restart r session
+.rs.restartR()
+#Syntax DT[ i , j , by]
+#The first parameter of data.table i refers to rows. It implies subsetting rows. It is equivalent to WHERE clause in SQL
+#The second parameter of data.table j refers to columns. It implies subsetting columns (dropping / keeping). #It is equivalent to SELECT clause in SQL.
+#The third parameter of data.table by refers to adding a group so that all calculations would be done within a group. Equivalent to SQL's GROUP BY clause
+#Other arguments : with, which, allow cartesian, roll, roll ends, SD, SD cols, on mult, nomatch
+install.packages("data.table") 
+#load required library
+library(data.table)
+#equivalent to read.csv() function of base R
+mydata = fread("https://github.com/arunsrinivasan/satrdays-workshop/raw/master/flights_2014.csv")
+#To get row count
+nrow(mydata)
+#col count
+ncol(mydata)
+#coloumn names
+names(mydata)
+# Selecting or keeping columns
+#1. need to select only 'origin' column
+dat1 = mydata[ , origin] # returns a vector
+#2.The above line of code returns a vector not data.table.
+#To get result in data.table format
+dat1 = mydata[, .(origin)]
+#3.To get result in data.frane
+dat1 = mydata[,c("origin"), with = FALSE]
+
+#Keeping a column based on column position
+#1. selecting second column from mydata
+dat2 =mydata[, 2, with=FALSE]
+#Keeping Multiple Columns
+#code tells R to select 'origin', 'year', 'month', 'hour' columns
+dat3 = mydata[, .(origin, year, month, hour)]
+#Keeping multiple columns based on column position
+#keep second through fourth columns using the code 
+dat4 = mydata[, c(2:4), with =FALSE]
+#Dropping a Column
+#include all the variables except one column, say. 'origin'
+dat5 = mydata[, !c("origin"), with =FALSE]
+#drop multiple columns
+dat6 <- mydata[,!c("origin", "dep_time", "min"), with = FALSE]
+names(mydata)
+#Keeping variables that contain 'dep'
+#%like% operator to find pattern. It is same as base R's grepl() function, SQL's LIKE operator
+dat7 = mydata[,names(mydata) %like% "dep", with=FALSE]
+#Rename Variables
+#rename variables with setnames() function, Renaming a variable 'dest' to 'destination'
+setnames(mydata , c("dest"), c("destination"))
+#rename multiple columns
+setnames(mydata , c("min", "tailnum"), c("minimum", "tail_number"))
+
+##Subsetting Rows / Filtering
+#Suppose you are asked to find all the flights whose origin is 'JFK'.
+#Filter based on one variable
+dat8 <- mydata[origin == "JFK"]
+#Select multiple Values
+# Filter all the flights whose origin is either 'JFK' or 'LGA'
+dat9 <- mydata[origin %in% c('JFK', 'LGA')]
+#Apply Logical Operator : NOT
+# Exclude Values
+dat10 <- mydata[!origin %in% c('JFK', 'LGA')]
+#selecting based on multiple columns(data.table)
+dat11 <- mydata[!origin == "JFK" & carrier == "AA"]
+
+#Faster Data Manipulation with Indexing
+# data.table uses binary search algorithm that makes data manipulation faster.
+#Binary search is an efficient algorithm for finding a value from a sorted list of values. It involves repeatedly splitting in half the portion of the list that contains values, until you found the value.
+#It is important to set key in your dataset which tells system that data is sorted by the key column
+# Set key:: setting 'origin' as a key in the dataset mydata.
+#Setting key will make the data sorted by the key
+#Performence Comaprison
+setkey(mydata, origin)
+#how to filter when key is turned on.
+#You don't need to refer the key column when you apply filter.
+data12 <- mydata[c("JFK", "LGA")]
+
+#setting key makes filtering twice as faster than without using keys.
+system.time(mydata[origin %in% c('JFK', 'LGA')])
+system.time(data12 <- mydata[c("JFK", "LGA")])
+#Indexing Multiple Columns
+#We can also set keys to multiple columns like we did below to columns 'origin' and 'dest'
+setkey(mydata, origin, dest)
+dat13 <- mydata[, .("JFK", "MIG")]
+# equivalent to mydata[origin == "JFK" & dest == "MIA"]
+# To identify the column(s) indexed by::
+key(mydata)
+
+##Sorting Data
+#We can sort data using setorder() function, By default, it sorts data on ascending order.
+mydata01 <- setorder(mydata, origin)
+#to sort in descending order
+mydata01 <- setorder(mydata, -origin)
+#Sorting Data based on multiple variables
+mydata02 <- setorder(mydata, origin, -carrier)
+
+#Adding Columns (Calculation on rows)
+#You can do any operation on rows by adding := operator. In this example, we are subtracting 'dep_delay' variable from 'dep_time' variable to compute scheduled departure time.
+mydata[, dep_sch:=dep_time - dep_delay]
+#Adding Multiple Columns
+mydata002 = mydata[, c("dep_sch","arr_sch"):=list(dep_time - dep_delay, arr_time - arr_delay)]
+
+#IF THEN ELSE
+mydata[, flag:= ifelse(min < 50, 1,0)]
+#It means to set flag= 1 if min is less than 50. Otherwise, set flag =0.
+
+#How to write Sub Queries (like SQL)
+#We can use this format - DT[ ] [ ] [ ] to build a chain in data.table. It is like sub-queries like SQL.
+mydata[, dep_sch:=dep_time - dep_delay][,.(dep_time,dep_delay,dep_sch)]
+#First, we are computing scheduled departure time and then selecting only relevant columns.
+
+#Summarize or Aggregate Columns
+mydata[, .(mean = mean(arr_delay, na.rm = TRUE),
+           median = median(arr_delay, na.rm = TRUE),
+           min = min(arr_delay, na.rm = TRUE),
+           max = max(arr_delay, na.rm = TRUE))]
+
+#Summarize Multiple Columns
+#To summarize multiple variables, we can simply write all the summary statistics function in a bracket. See the command below-
+mydata[, .(mean(arr_delay), mean(dep_delay))]
+#If you need to calculate summary statistics for a larger list of variables, you can use .SD and .SDcols operators. The .SD operator implies 'Subset of Data'.
+mydata[, lapply(.SD, mean), .SDcols = c("arr_delay", "dep_delay")]
+#Summarize all numeric Columns
+#By default, .SD takes all continuous variables (excluding grouping variables)
+mydata[, lapply(.SD, mean)]
+#Summarize with multiple statistics
+mydata[, sapply(.SD, function(x) c(mean=mean(x), median=median(x)))]
+
+#GROUP BY (Within Group Calculation)
+#Summarize by group 'origin
+mydata[, .(mean_arr_delay = mean(arr_delay, na.rm = TRUE)), by = origin]
+
+#Use key column in a by operation
+#Instead of 'by', you can use keyby= operator.
+mydata[, .(mean_arr_delay = mean(arr_delay, na.rm = TRUE)), keyby = origin]
+#Summarize multiple variables by group 'origin'
+mydata[,.(mean(arr_delay, na.rm = TRUE), mean(dep_delay, na.rm = TRUE)), by = origin]
+mydata[,lapply(.SD, mean, na.rm = TRUE), .SDcols = c("arr_delay", "dep_delay"),by = origin]
+
+#Remove duplicates
+x <- unique(mydata)
+# remove based on some variable
+setkey(mydata, "carrier")
+unique(mydata)
+
+#Extract values within a group
+#selects first and second values from a categorical variable carrier.
+mydata[, .SD[1:2], by=carrier]
+# Select LAST value from a group
+mydata[, .SD[.N], by=carrier]
+
+#SQL's RANK OVER PARTITION
+#In SQL, Window functions are very useful for solving complex data problems. RANK OVER PARTITION is the most popular window function. It can be easily translated in data.table with the help of frank() function. frank() is similar to base R's rank() function but much faster
+dt = mydata[, rank:=frank(-distance,ties.method = "min"), by=carrier]
+#In this case, we are calculating rank of variable 'distance' by 'carrier'. We are assigning rank 1 to the highest value of 'distance' within unique values of 'carrier'.
+
+#Cumulative SUM by GROUP
+#We can calculate cumulative sum by using cumsum() function.
+dat = setorder(mydata[, cum:=cumsum(distance), by=carrier],carrier, distance)
+
+#Lag and Lead
+# The lag and lead of a variable can be calculated with shift() function. The syntax of shift() function is as follows - shift(variable_name, number_of_lags, type=c("lag", "lead"))
+DT <- data.table(A=1:5)
+DT[, X:= shift(A, 1, type = "lag")]
+DT[, Y:= shift(A, 1, type = "lead")]
+#Between & LIKE operator
+# %between% operator to define a range
+DT[A %between% c(1,3)]
+#The %like% is mainly used to find all the values that matches a pattern.
+DT <- data.table(name = c("dep_a", "dep_b", "arr_c", "arr_d"), ID = c(1,2,3,4))
+DT[name %like% "dep"]
+
+##Merging / Joins
+#data.table by default takes common key variable as a primary key to merge two datasets. Whereas, data.frame takes common variable name as a primary key to merge the datasets
+#Sample data
+(dt1 <- data.table(A = letters[rep(1:3, 2)], X = 1:6, key = "A"))
+(dt2 <- data.table(A = letters[rep(2:4, 2)], Y = 6:1, key = "A"))
+#(dt3 <- data.table(A = letters[rep(1:4,2)], y = 1:8, key = "A"))
+#Inner Join
+# It returns all the matching observations in both the datasets
+merge(dt1, dt2, by = "A")
+#Left Join
+#It returns all observations from the left dataset and the matched observations from the right dataset
+merge(dt1, dt2, by = "A", all.x = T)
+#Right Join
+#It returns all observations from the right dataset and the matched observations from the left dataset.
+merge(dt1, dt2, by = "A", all.y = T)
+# Full Join
+# It return all rows when there is a match in one of the datasets.
+merge(dt1, dt2, all = T)
+
+#Convert a data.table to data.frame
+# You can use setDF() function to accomplish this task.
+setDF(mydata)
+#to check table type
+class(mydata)
+#Similarly, you can use setDT() function to convert data frame to data table
+setDT(mydata)
+
+
+# Calculate total number of rows by month and then sort on descending order
+mydata[,.N] #calculates no of rows or can use nrow
+mydata[,.N, by = month][order(-N)]
+
+#Find top 3 months with high mean arrival delay
+mydata[,.(mean_arrdel = mean(arr_delay, na.rm = T)), by = month][order(-mean_arrdel)][1:3]
+
+#Find origin of flights having average total delay is greater than 20 minutes
+mydata[,.(mean(arr_delay, na.rm = TRUE), mean(dep_delay, na.rm = TRUE)), by = origin][(arr_delay + dep_delay) > 20]
+mydata[, lapply(.SD, mean, na.rm = TRUE), .SDcols = c("arr_delay", "dep_delay"), by = origin][(arr_delay + dep_delay) > 20]
+
+#Extract average of arrival and departure delays for carrier == 'DL' by 'origin' and 'dest' variables
+mydata[carrier=="DL", lapply(.SD, mean, na.rm = TRUE), .SDcols = c("arr_delay", "dep_delay"), by = .(origin, dest)]
+
+mydata[carrier == "DL",
+       lapply(.SD, mean, na.rm = TRUE),
+       by = .(origin, dest),
+       .SDcols = c("arr_delay", "dep_delay")]
+
+#Pull first value of 'air_time' by 'origin' and then sum the returned values when it is greater than 300
+mydata[, .SD[1], .SDcols="air_time", by=origin][air_time > 300, sum(air_time)]
+
+
+
+
+#There are two main functions in reshape2:
+
+#melt – convert data from wide format to long format
+#cast – convert data from long format to wide format
+library(reshape2)
+mtcars$car <- rownames(mtcars)
+mtcarsMelt <- melt(mtcars)
+head(mtcarsMelt)
+
+#If you want to use a different set of id variables, they can be specified using id.vars. We can also rename the variable and value columns using the variable.name and value.name parameters
+mtcarsMelt <- melt(mtcars, id.vars = c('cyl', 'gear'), variable.name = 'carVariable', value.name = 'carValue')
+head(mtcarsMelt)
+tail(mtcarsMelt)
+
+#The cast function is used to convert data from long format to wide format. There are two main types of the cast function:
+#dcast – returns a dataframe as the output
+#acast – returns a vector/matrix/array as the output
+mtcarsMelt <- melt(mtcars)
+mtcarsCast <- dcast(mtcarsMelt, car ~ variable)
+head(mtcarsCast)
+#The dcast function uses a formula to convert the data to wide format. Here, the formula is given by car + cyl ~ variable where car and cyl are the id variables, and variable is the name of the variable column.
+#if we use diff id variables in melt and We get a warning that says: Aggregation function missing: defaulting to length. The dataset just shows the total number of observations for each combination of cyl and gear. This is because the dcast function is unable to uniquely identify each data point. However, it still has some uses. For example, we can find the mean of all variables for each combination of cyl and gear by using the fun.aggregate parameter as follows:
+
+mtcars$car <- NULL
+mtcarsMelt <- melt(mtcars, id.vars = c('cyl', 'gear'))
+mtcarsCast <- dcast(mtcarsMelt, cyl + gear ~ variable, fun.aggregate = mean)
+head(mtcarsCast)
+
+
+#Dplyr
+#read csv
+library(dplyr)
+mydata <- read.csv("sample.csv")
+#select Random rows
+#The sample_n function selects random rows from a data frame (or table). The second parameter of the function tells R the number of rows to select.
+sample_n(mydata,3)
+
+#Selecting random fractions of rows
+sample_n(mydata,0.1)
+
+#Remove Duplicate Rows based on all the variables (Complete Row)
+x1 <- distinct(mydata)
+colnames(mydata)
+#Remove Duplicate Rows based on a variable
+#The .keep_all function is used to retain all other variables in the output data frame.
+x2 = distinct(mydata, Index, .keep_all= TRUE)
+
+#Remove Duplicates Rows based on multiple variables
+#In the example below, we are using two variables - Index, Y2010 to determine uniqueness.
+x2 = distinct(mydata, Index, Y2010, .keep_all= TRUE)
+
+#select( ) Function <- It is used to select only desired variables.
+#Suppose you are asked to select only a few variables. The code below selects variables "Index", columns from "State" to "Y2008".
+mydata2 = select(mydata, Index, State:Y2008)
+
+#Dropping Variables
+
+# The minus sign before a variable tells R to drop the variable
+mydata2 = select(mydata, -Index, -State)
+mydata = select(mydata, -c(Index,State))
+
+#selecting or dropping using starts with
+mydata3 <- select(mydata, starts_with("Y"))
+
+#The following functions helps you to select variables based on their names.
+# starts_with()	Starts with a prefix
+# ends_with()	Ends with a prefix
+# contains()	Contains a literal string
+# matches()	Matches a regular expression
+# num_range()	Numerical range like x01, x02, x03.
+# one_of()	Variables in character vector.
+# everything()	All variables.
+
+#Selecting Variables contain 'I' in their names
+mydata3 <- select(mydata, contains("I"))
+
+#Reorder Variables
+# The code below keeps variable 'State' in the front and the remaining variables follow that.
+mydata4 <- select(mydata, State, everything())
+
+#rename( ) Function
+#rename() syntax : rename(data , new_name = old_name)
+mydata4 <- rename(mydata, Index1 = Index)
+
+#filter( ) Function
+#It is used to subset data with matching logical conditions.
+#filter() syntax : filter(data , ....)
+mydata7 = filter(mydata, Index == "A")
+mydata4 = filter(mydata, Index %in% c("A", "C"))
+#and condition
+mydata4 = filter(mydata, Index %in% c("A", "C") & State == "Alabama")
+#or condition
+mydata4 = filter(mydata, Index %in% c("A", "C") | State == "Alabama")
+#not condition
+mydata4 = filter(mydata, Index %in% c("A") & !State == "Alabama")
+
+#grepl() condition <- contains
+#The grepl function is used to search for pattern matching. In the following code, we are looking for records wherein column state contains 'Ar' in their name.
+mydata5 <- filter(mydata, grepl("Ar", State))
+
+#summarise( ) Function <- It is used to summarize data.
+#summarise() syntax : summarise(data , ....)
+mydata6 <- summarise(mydata, Y2015_mean = mean(Y2015), Y0215_med = median(Y2015))
+#Summarize Multiple Variables
+summarise_at(mydata, vars(Y2005, Y2006), funs(n(), mean, median))
+
+#How to apply Non-Standard Functions <- summarize_at
+set.seed(222)
+mydata <- data.frame(X1=sample(1:100,100), X2=runif(100))
+summarise_at(mydata,vars(X1,X2), function(x) var(x - mean(x)))
+
+#Summarize all Numeric Variables <- summarize_if
+#The summarise_if function allows you to summarise conditionally.
+summarise_if(mydata, is.numeric, funs(n(),mean,median))
+#Alternative:: First, store data for all the numeric variables
+numdata = mydata[sapply(mydata,is.numeric)]
+#Second, the summarise_all function calculates summary statistics for all the columns in a data frame
+summarise_all(numdata, funs(n(),mean,median))
+
+#arrange() function : Use : Sort data
+#Syntax :: arrange(data_frame, variable(s)_to_sort)
+#The default sorting order of arrange() function is ascending. In this example, we are sorting data by multiple variables.
+arrange(mydata, Index, Y2011)
+#Sort descending
+arrange(mydata, desc(Index), Y2011)
+
+install.packages("magrittr")
+library(magrittr)
+#Pipe Operator %>%
+#It is important to understand the pipe (%>%) operator before knowing the other functions of dplyr package. dplyr utilizes pipe operator from another package (magrittr).
+#syntex ata_frame %>% filter(variable == value)
+dt = sample_n(select(mydata, Index, State),10)
+#or 
+dt = mydata %>% select(Index, State) %>% sample_n(10)
+
+#group_by() function : Use : Group data by categorical variable
+group_by(data, variables)
+t = mydata %>% group_by(Index) %>%
+        summarise_at(vars(Y2011:Y2015), funs(n(), mean(., na.rm = TRUE)))
+
+#do() function :  Use : Compute within groups
+#Syntax :do(data_frame, expressions_to_apply_to_each_group)
+#Filter Data within a Categorical Variable
+#Suppose you need to pull top 2 rows from 'A', 'C' and 'I' categories of variable Index. 
+t = mydata %>% filter(Index %in% c("A", "C","I")) %>% group_by(Index) %>%
+        do(head( . , 2))
+
+#We are calculating third maximum value of variable Y2015 by variable Index. The following code first selects only two variables Index and Y2015. Then it filters the variable Index with 'A', 'C' and 'I' and then it groups the same variable and sorts the variable Y2015 in descending order. At last, it selects the third row.
+mydata %>% select(Index , Y2015) %>% filter(Index %in% c("A", "C", "I")) %>% group_by(Index) %>% do(arrange(.,desc(Y2015))) %>% slice(3)
+#Slice is used to get specific row (select rows by position)
+
+#Summarize, Group and Sort Together 
+t = mydata %>%
+        group_by(Index)%>%
+        summarise(Mean_2014 = mean(Y2014, na.rm=TRUE),
+                  Mean_2015 = mean(Y2015, na.rm=TRUE)) %>%
+        arrange(desc(Mean_2015))
+
+#mutate() function : Use : Creates new variables
+#The following code calculates division of Y2015 by Y2014 and name it "change".
+mydata1 = mutate(mydata, change=Y2015/Y2014)
+
+# Multiply all the variables by 1000
+# It creates new variables and name them with suffix "_new".
+mydata11 = mutate_all(mydata, funs("new" = .* 1000))
+
+#Calculate Rank for Variables
+#Suppose you need to calculate rank for variables Y2008 to Y2010.
+.rs.restartR()
+
+
+
+#if else syntax
+if (condition) {
+        
+} else if (condition) {
+        
+} else if (condition) {
+        
+}
+
+
+if (condition) {
+        
+} else {
+        
+}
+
+#for Loop
+#runs for specific number of condition
+x <- c("a", "b", "c", "d")
+for (i in 1:4) {
+        print(x[i])
+}
+
+for (i in seq_along(x)) {
+        print(x[i])
+}
+for (letter in x) {
+        print(letter)
+}
+
+for (i in 1:4) print(x[i])
+
+
+#while loop
+#it rns till the condition is true, used very less as it may go in a infinite loop and is very slow
+count <- 0
+while (count < 10) {
+        print(count)
+        count <- count +1
+}
+
+#repeat
+#it is used to run a program for infinite time unless a break is called.
+
+repeat {
+        x1 <- compute()
+        if(abs(x1-x0)< t0){
+                break
+        } else {
+                x0 <- x1
+        }
+}
+
+#next is used to skip an iteration of loop.
+
+for (i in 1:100) {
+        if (i<=20) {
+                next
+                ## do something here
+                print(i)
+        }
+}
+
+#return signals that a function should exit and return a given value
+
+#function
+
+fun1 <- function(x, y) {
+        x+y
+}
+fun1(3,6)
+
+
+x <- 4:14
+fun2 <- function(x) {
+        use <- x>10
+        x[use]
+}
+fun2(x)
+
+fun3 <- function(y, removeNA =TRUE) {
+        nc <- ncol(y)
+        means <- numeric(nc)
+        for (i in 1:nc) {
+                means[i] <- mean(y[,i], na.rm = removeNA)
+        }
+        return(round(means))
+}
+fun3(airquality)
+search()
+
+#Loop functions, when working on command line writing for and while loop is not easy.
+#lapply: loops over a list and tries to evaluate the function at each element.
+#sapply: similar to lapply but simplies the result
+#apply :apply a function over margings of an array.
+#tapply: apply a function over subset of vectors.
+#mapply: multivariate version of lapply.
+
+lapply(list, function) #requires a list and a function which will run on each element
+x <- list(a = 1:5, b = rnorm(10))
+lapply(x, mean)
+#lapply may or may not have a list as input but what goes out as output will always be a list.
+#runif will gnerate random numbers
+x <- 1:5
+lapply(x, runif)
+#sapply will check if the length of the list is 1 thwn it will return a vector if greater than 1 than it will return matrix else if it dosen't understand it will return a list.
+sapply(x, mean)
+
+#apply function is used to apply to a row or col of a matrix. used on arrays. Not faster than loop but can be fit in 1 line. Involves less 
+
+apply(array, margin, ...) #syntax
+x <- matrix(rnorm(200), 20,10)
+apply(x, 2, mean) #will get the mean of columns
+apply(x, 1, mean) #will get the mean of rows
+
+#some useful functions
+rowSums = apply(x, 1, sum) #get row sum
+colSums = apply(x, 2, sum) #column summ
+#similarly we can get means, quantiles(need to spicify range)
+#tapply splits up a vector ad then applies function orr summary statistic.
+ #split : If a variable f has 3 level idntified as 3 groups splits helps in spliting the groups.
+# after splitting lapply or sapply can be used.
+f <- gl(3,10)
+x <- c(rnorm(10, runif(10), rnorm(10,1)))
+lapply(split(x,f), mean)
+
+#debugging
+#traceback call just tells us how many fucntion calls you are in and where the error occurred.
+#debug allows us to run step by step by flagging
+
+#trace function allows to put debug code within a fucntion
+#recover allows to change the behaviour of error
+
+mean(z)
+traceback()
+#it shows where the error occurred in herachy of the functions. # you have to call tracebck immediately after the error occrred.
+debug(lm)
+#runs code line by line
+
+#str function gives the structure of a function or object
+str(lm)
+
+#generating random numbers
+#rnorm : random normal varaites with a given sd and mean
+#dnorm: evaluates random normal density
+#pnorm: evaluates cum dist function for a normal distribution
+#rpois : generated poisson variates with a given rate
+system.time() #returns time to run a code. performence measure
+Rprof() #analyses performnce of the code
+summaryRprof() #summarises the output of Rprof
+
+#creating wordcloud
+install.packages("wordcloud")
+library(wordcloud)
+library(reshape2)
+
+tidy_data %>%
+        inner_join(bing) %>%
+        count(word, sentiment, sort = TRUE)  %>%
+        acast(word ~ sentiment, value.var = "n", fill = 0) %>%
+        comparison.cloud(colors = c("red", "dark green"),
+                         max.words = 100)
+
+#splitting sentences and creating a list of seperate words with its count, 
+tidy_data <- austen_books() %>% group_by(book) %>% 
+        mutate(linenumber = row_number(),
+               chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]", 
+                                                       ignore_case = TRUE)))) %>%
+        ungroup() %>%
+        unnest_tokens(word, text)
+		
+#Plot a heatmap
+ggplot(day_and_hour, aes(day, hour, fill = Total)) +
+            geom_tile(color = "white") +
+              ggtitle("Heat Map by Hour and Day")
+
+#bar plot
+month_hour <- data_2014 %>%
+          group_by(month, hour) %>%
+             dplyr::summarize(Total = n())
+ggplot(month_hour, aes(hour, Total, fill = month)) + 
+       geom_bar( stat = "identity") +
+          ggtitle("Trips by Hour and Month") +
+           scale_y_continuous(labels = comma)
+		   
+#Run a gradient boosting model
+install.packages("gbm")
+library(gbm)
+system.time(
+        model_gbm <- gbm(Class ~ .
+                         , distribution = "bernoulli"
+                         , data = rbind(train_data, test_data)
+                         , n.trees = 500
+                         , interaction.depth = 3
+                         , n.minobsinnode = 100
+                         , shrinkage = 0.01
+                         , bag.fraction = 0.5
+                         , train.fraction = nrow(train_data) / (nrow(train_data) + nrow(test_data))
+        )
+)
+
+#building artifical neural network model
+
+install.packages("neuralnet")
+library(neuralnet)
+
+ANN_model <- neuralnet(Class~. , data = train_data, linear.output = FALSE)
+plot(ANN_model)
+
+#predicting ANN results
+predictANN <- compute(ANN_model, test_data)
+resultANN  <- predictANN$net.result
+resultANN <- ifelse(resultANN>0.5, 1, 0)
+
+#building a decision tree model
+install.packages("rpart")
+install.packages("rpart.plot")
+library(rpart)
+library(rpart.plot)
+
+#building the decision tree model
+decision_tree <- rpart(Class ~., data = df1, method = "class")
+predicted_value <- predict(decision_tree, df1, method = "class")
+probablity <- predict(decision_tree, df1, method = "prob")
+rpart.plot(decision_tree)
+
+
+#fitting the logistic model.
+#A logistic model is used for modelling the probablity of a class as pass or fail, pos/neg, fraud/not fraud.
+log_model <- glm(test_data$Class ~., data = test_data, family = binomial())
+summary(log_model)
+#after summarising, plot the model
+plot(log_model)
+
+#Splitting the column with multiple values with a seperator into multiple columns
+movie_genre2 <- as.data.frame(tstrsplit(movie_genre[,1], '[|]', 
+                                        type.convert=TRUE), 
+                              stringsAsFactors=FALSE) 
+colnames(movie_genre2) <- c(1:10)
+
+
+#reshaping columns
+#Reshaping multiple value columns to wide is now possible with dcast from data.table_1.9.5 without using the melt
+ratingMatrix <- dcast(rating_data, rating_data$userId ~ rating_data$movieId, value.var = "rating", 
+                      na.rm = F)
+
+#plot heat map
+#heatmap of 25 rows and columns
+image(ratingMatrix[1:25,1:25], main = "Heatmap")
+
+#Normalizeing the value.
+
+#there can be multiple users who have given all movies very low rating or all movies very high rating. in such case we need to normalize such data.
+#this will act as bias or outlier when bulding a regression model. Therefore we need to normalize such data.
+#normalization standardized numerical values in a column to a common scale value. This is done such that there is no distortion in the range of values.
+#further normalization transforms the avg value of our ratings to 0.
+
+normalized_ratings <- normalize(movie_ratings)
+			  
+#Binarizng data
+#performing data binarization.
+#binarization of the data means we have 2 values 0 and 1 which will allow our recommendation system to work efficiently. We will define our matrix such that it will contain if the value is above 3 and 0 if the value is below3.
+
+binary_min_movies <- quantile(rowCounts(movie_ratings), 0.95)
+binary_min_users <- quantile(colCounts(movie_ratings), 0.95)
+
+good_rated_films <- binarize(movie_ratings, minRating =3)
+
+#splitting the data for model
+sampled_data <- sample(x = c(TRUE, FALSE),
+                       size = nrow(movie_ratings),
+                       replace = TRUE,
+                       prob = c(0.8, 0.2))
+training_data <- movie_ratings[sampled_data, ]
+testing_data <- movie_ratings[!sampled_data, ]
+
+#building the recommendation model
+#exploring various parameters of item based collborative filteriing.
+#k denotes the no of items for computing thier similarity. here k=30. Here the algorithm will idenity k most similar items and store thier number. Cosine as well as pearson method can be us
+
+recommendation_system <- recommenderRegistry$get_entries(dataType ="realRatingMatrix")
+recommendation_system$IBCF_realRatingMatrix$parameters
+
+rcom_model <- Recommender(data = training_data,
+                          method = "IBCF",
+                          parameter = list(k=30))
+						  
+#To remove a character from a string, or trim a character from a string.
+temp$`Shipped Units` <- gsub("\\,","",temp$`Shipped Units`)
+
+#TO find a pattern in a column/varaible
+grepl("Viewing", temp[1,1], fixed = TRUE)
+
+#selecting part of string based on chracters and start stop
+    d1 <- substring(date_column, regexpr("=",date_column)+1) 
+    d2 <- substring(d1,2,nchar(d1)-1)
+
+#TO read and append all files in a path
+get_data<-function(folder_Path){
+  
+  file_list <- list.files(folder_Path)
+  rm(dataset)
+  for (file in file_list){
+    
+    if (!exists("dataset")){
+      dataset <- (fread(paste0(folder_Path,file)))
+      dataset[is.na(dataset)]<-0
+      
+    }
+    
+    if (exists("dataset")){
+      temp_dataset <-(fread(paste0(folder_Path,file)))
+      temp_dataset[is.na(temp_dataset)]<-0
+      
+      dataset<-bind_rows(dataset, temp_dataset)
+      rm(temp_dataset)
+    }
+    
+  }
+  
+  return(dataset)
+  
+}
+#merging dataframe based on a value
+Final_Sales_Data <- merge(x = final_data, y = week_mapping, by.x = "Date", by.y = "File_Input", all.x = TRUE)
+
+
+#Sorting a dataframe based on a value
+Final_Sales_Data2 <- Final_Sales_Data[with(Final_Sales_Data, order(Final_Sales_Data$Week)), ] #for dataframe METHOD 1
+#Final_Sales_Data2 <- Final_Sales_Data2[order(Final_Sales_Data2$Week)]  #for data table
+Final_Sales_Data2 <- setorder(Final_Sales_Data2, Week)  #for data frame METHOD 2.
+
+#unique and !duplicated works the same ways
+df2 <- df[duplicated(df), ]		#it will return only duplicate rows
+df3 <- df[!(duplicated(df)), ]	#it will return only uniqe rows
+df1 <- unique(df)				#it will return only uniqe rows
+
+#differnce between 2 columns
+setdiff(col1, col2)
+
+#common/union between 2 columns
+common <- intersect(data.frame1$col, data.frame2$col)
+
+#reading a text file
+ASIN_SNS_rd = read.delim("asin_grain_COP_US_SNS.txt", 
+                         sep="\t")
+						 
+#to get count of duplicate rows with group by
+#for dataframe
+temp2 <- temp %>% group_by("ASIN","UPC","EAN","Product Title", "Brand","Date", "Week") %>% summarise(ct = n())
+#for data table
+temp <- as.data.table(temp)
+temp2 <- temp[,.(ct = .N), by = .(ASIN,UPC)]
+temp3 <- temp2[ct>1]
+
+
+#filtering rows
+base R
+subset(df1, Temp >30 & weight <80)
+dplyr
+filter(df1, Temp >30 & weight <80)	
+expr[expr$cell_type == "hesc", ]
+or expr[expr$cell_type %in% c("hesc", "bj fibroblast"), ]
+
+#get week from date posxict
+amazon_onplatform$weekno <- week(amazon_onplatform$Date)
+
+#to extract week and year from a data
+df$w <- format(df$Date,"%Y%v") #%Y%m for month and year extraction
+					  
+#aggregating at certain number of columns in dplyr
+df2 = amazon_onplatform %>%
+  group_by(`Profile Name`,`Sub-brand`,`Product Type`, ASIN, Headline, yearweek)%>%
+  summarise(Impressions = sum(Impressions, na.rm=TRUE),
+            Clicks = sum(Clicks, na.rm=TRUE),
+            Cost = sum(Cost, na.rm=TRUE),
+            Rev. = sum(Rev., na.rm=TRUE),
+            ROAS = sum(ROAS, na.rm=TRUE)) %>%
+  arrange(ASIN,yearweek)
+
+#aggregating data.table
+  sns_grouped <- final[,
+                       .(SNS_Quantity = sum(Quantity,na.rm = T),
+                         SNS_Net_Sales= sum(`Net Sales`, na.rm = T),
+                         SNS_List_Price= mean(`List Price`, na.rm = T),
+                         SNS_Rebate= sum(Rebate, na.rm = T)
+                       )
+                       ,by =c('week_range',"Asin")]
+						  
+#aggreagting in data.table
+
+dat[, .(count = .N, var = sum(VAR)), by = MNTH]						  
+
+# using which -- to filter out rows based on some condition.
+res$arcs <- res$arcs[-which((res$arcs[, 'from'] == "M.Work" & res$arcs[, 'to'] == "Family")), ]
+
+#remove all varaibles from enviroment but one
+rm(list = setdiff(ls(), "ARAP_data"))
+
+# to select certain no of columns in the final dataframe
+1. Create a column mapping file
+  columns_mapping<- fread("columns_file.csv")
+columns_to_retain <- columns_mapping$column_name[columns_mapping$retain==1]
+  first_file<-data.frame(read_excel(path = files[1]),file_name=files[1],check.names = F)
+  final<-first_file
+  final<-final[,names(final)%in% columns_to_retain]
+  
+#To get the max of all columns
+XX <- data.frame(LIMIT = sapply(dat[, -c(1, 2)], max)) # gives a vector. and on converting a DF it creates 1 column and max of all columns as obs.
+XY <- data.frame(LIMIT = lapply(dat[, -c(1, 2)], max))	 #gives a list. and on converting a DF it creates 1 column and max of all columns as obs.
+
+#to convert long to wide
+
+a <- dcast(ASIN_Crate, asin+item_name+period~metric_name) #variables before ~ is the varaibles that we want as values, after ~ will be columns that we want.
+
+#to convert wide to long
+library(reshape)
+setDT(a)
+b <- melt(a, id.vars = c("asin", "item_name", "period"),
+          measure.vars = c("Conversion Rate", "Glance Views", "Glance Views Share"))
+		  
+#Long to wide
+Keyword_campaigns <- dcast(temp5,SHIPMENT_ASIN+Week_Number+Date_Required ~ Brand_Extracted, 
+                           value.var=c("Impressions","Clicks","Spend", "CTR"))
+
+#Convert multiple columns data type using apply
+metrics <- c("Impressions","Clicks","Spend")
+temp2[, metrics] <- sapply(temp2[, metrics], as.numeric)
+
+#loop to add a value in rows and bind it
+for (i in c(2:length(Required_ASIN))) {
+  temp <- generic_campaigns
+  temp$ASIN <- Required_ASIN[i]
+  temp <- data.frame(temp, check.names = F)
+  final<-rbind(final,temp)
+  print(paste0(Required_ASIN[i], " - Done"))
+}
+
+#write a csv along with date
+fwrite(Final_offplatform_data, paste0("//falmumapp43/CP US NA Key Driver Analysis (20-SCP-3182)/2. Raw Data/Processed data/Final_offplatform_data_",Sys.Date(),".csv"))
+ 
+ 
+ #selecting columns from data table
+ 
+ df <- df_rd[, colnames(df_rd) %in% Required_columns, with = FALSE]
+df_metrics <- df[, colnames(df) %in% Metric_columns, with = FALSE]
+
+#parsing required columns to numeric from character .. or converting character to numeric 
+df_metrics <- as.data.frame(df_metrics)
+for (j in colnames(df_metrics)) {
+  
+  if (is.character(df_metrics[,j]))
+  {
+    df_metrics[,j]=parse_number(df_metrics[,j])
+  }
+}
+
+#skip a line in loop sing if else
+for(n in 1:5) {
+  if(n==3) next # skip 3rd iteration and go to next iteration
+  cat(n)
+}
+
+#get index of rows where everything is NA
+ind <- as.data.frame(apply(X, 1, function(x) all(is.na(x))))
+
+#Remove all rows if any column is NA
+final3 <- na.omit(final)
+final[complete.cases(final), ]
+
+#plot a box plot in loop and sve it in pdf
+for (i in c(1:length(outlier_data$ASIN)))
+  {
+  boxplot_data=input_data[input_data$ASIN==outlier_data[i,"ASIN"] ,outlier_data[i,"Feature"]]
+  file_name_plot=paste(outlier_data[i,"ASIN"],"_",outlier_data[i,"Feature"],".pdf")
+  pdf(file_name_plot)
+  boxplot(boxplot_data,ylim = c(outlier_data[i,"min_value"],outlier_data[i,"max_value"]))
+  dev.off()
+  }
+  
+#converting specific column negative values to 0
+  
+input_data[ ,c("OrderedUnits","AvailableInventory")][input_data[ ,c("OrderedUnits","AvailableInventory")]<0] <-0
+
+
+#function to convert all or selective columns to date
+   myfun <- function(x) as.Date(x, format = "%m/%d/%Y", origin = "1899/12/30")
+    week_mapping <- data.frame(lapply(week_mapping, myfun))
+
+#function to map daily to weekly
+daily_to_weekly_mapping <- function(){
+  
+  week_mapping <-fread("//falmumapp43/CP US NA Key Driver Analysis (20-SCP-3182)/1. R files/Mapping files/Daily_to_weekly_mapping.csv")
+  
+  myfun <- function(x) as.Date(x, format = "%m/%d/%Y", origin = "1899/12/30")
+  week_mapping <- data.frame(lapply(week_mapping, myfun))
+  
+  temp3 <- as.data.frame(temp2)
+  temp3$Date_Required <- NA
+  
+    for (j in 1:nrow(week_mapping)) {
+      
+      temp3[temp3$Date >= week_mapping$StartDate[j] & 
+          temp3$Date< week_mapping$EndDate[j],"Date_Required"]=as.character(week_mapping$StartDate[j])
+    }
+  return(temp3)
+}
+
+#display a text while running a function
+cat("installing the requisite packages:\n")
+
+#choose a file interactively
+file.choose()
+
+#Display a prompt to get user reponse
+ask("\nProvide your data file (in .xlsx or .CSV format):\n")
+
+#get a path of a object
+dirname(object_selected_interactively)
+
+#grepl searches for a pattern in a line/text/column. string function
+grepl(".xlsx",get_d[[1]])
+
+#store file name in list index 1 and file directory on index 2
+  ask("\nProvide your data file (in .xlsx or .CSV format):\n")
+  get_d[[1]] <- file.choose()
+  get_d[[1]]
+  get_d[[2]]<-dirname(get_d[[1]])
+  
+#read file whrther it is xlsx or csv
+  if(grepl(".xlsx",get_d[[1]])){
+    get_d[[3]]<-read.xlsx(get_d[[1]],sheetIndex = 1, stringsAsFactors = FALSE,header = TRUE)
+  }else{
+    get_d[[3]]<-read.csv(get_d[[1]],header = TRUE)
+  }
+  get_d[[3]]<-as.data.frame(get_d[[3]])
+
+#store a dataframe on a index of a list.
+get_d <- list()
+get_d[[1]]<-as.data.frame(get_d[[1]])
+
+#get rows and columns from dim function
+dim(get_d[[3]])[1] #rows
+dim(get_d[[3]])[2] #columns
+
+#print a dataframe
+cat("\nA portion of your loaded dataset looks like this:\n")
+print.data.frame(get_d[[3]][1:display_row, 1:display_col])
+
+#tp print a combination of character and values
+cat(sprintf("No of rows :5d, no of cols :%d", dim(get_d[[1]][1]), dim(get_d[[1]][2])))
+
+#readline used to read a line from the terminal.
+ rspnse<-as.integer(readline(prompt = "\nPlease enter your option: "))
+ 
+#best way to filter and subset rows and columns
+columns = setDT(read_excel("Column_Selection.xlsx", sheet = 1))
+Required_columns <- columns[Selection ==1, Variable]
+final_data <- data[, colnames(data) %in% Required_columns, with = FALSE]
+
+#get user response and store as integer and display just text
+cat("\n\nHow much of your data, you want to use for modeling ?")
+rspnse<-as.integer(readline(prompt = "\nPlease enter your option: "))
+
+#splitting a column into 2
+temp <-separate(data = temp, col = `WeekStarting(Mon)`, into = c("Start", "End"), sep = "\\-")
+
+#splitting a column based on multiple values:: long to wide
+temp3 <- dcast(setDT(temp2), ASIN + Date_Required ~ Level, 
+               value.var = c("Impressions","Clicks","Spend", "CTR"))
+
+#convert integer date to date format
+data$`WeekStarting(Mon)` <- excel_numeric_to_date(as.numeric(as.character(data$`WeekStarting(Mon)`)), date_system = "modern")
+
+#get directory of current running script
+dirname(rstudioapi::getSourceEditorContext()$path)
+
